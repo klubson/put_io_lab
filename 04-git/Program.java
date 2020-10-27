@@ -3,3 +3,5 @@ class Vehicle {
   int fuelcap; // pojemność zbiornika paliwa w litrach
   double lkm; // zużycie paliwa w litrach na 100 kilometrów
 }
+
+//kolejne zmiany
