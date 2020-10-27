@@ -1,3 +1,5 @@
+
+//zmiana 1
 class Vehicle {
   int passengers; // liczba pasażerów
   int fuelcap; // pojemność zbiornika paliwa w litrach
