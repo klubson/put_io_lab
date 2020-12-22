@@ -20,58 +20,44 @@ import java.util.Collections;
 import java.util.stream.IntStream;
 
 public class ExpenseManagerTest {
-
     private static ArrayList<Expense> expenses;
-
     @BeforeAll
     static void setUP() {
         expenses = new ArrayList<>();
         Expense expense = new Expense();
         expense.setAmount(3);
         IntStream.range(0, 3).forEach(i -> expenses.add(expense));
-
     }
-
-
     @Test
     void calculateTotalTest() {
         IExpenseRepository expenseRepositoryMocked = mock(IExpenseRepository.class);
         when(expenseRepositoryMocked.getExpenses()).thenReturn(expenses);
-
         FancyService fancyServiceMoced = mock(FancyService.class);
         ExpenseManager expenseManager = new ExpenseManager(expenseRepositoryMocked, fancyServiceMoced);
-
         assertEquals(9, expenseManager.calculateTotal());
-
-
     }
-
     @Test
     void calculateTotalForCategoryTest() {
         IExpenseRepository expenseRepositoryMocked = mock(IExpenseRepository.class);
-
         when(expenseRepositoryMocked.getExpensesByCategory(anyString())).thenReturn(Collections.emptyList());
         when(expenseRepositoryMocked.getExpensesByCategory("Home")).thenReturn(expenses);
         when(expenseRepositoryMocked.getExpensesByCategory("Car")).thenReturn(expenses);
-
         FancyService fancyServiceMocked = mock(FancyService.class);
         ExpenseManager expenseManager = new ExpenseManager(expenseRepositoryMocked, fancyServiceMocked);
-
         assertEquals(0, expenseManager.calculateTotalForCategory("Sport"));
         assertEquals(0, expenseManager.calculateTotalForCategory("Food"));
         assertEquals(9, expenseManager.calculateTotalForCategory("Car"));
         assertEquals(9, expenseManager.calculateTotalForCategory("Home"));
-        //Pytanie 5.1 Tak ma znaczenie bo najpierw trzeba bardziej ogolne a potem bardziej szcegolne gdyz ono sprawdza je po kolei
-
+        //Pytanie 5.1: Kolejność oczekiwań ma znaczenie, ponieważ ze względu na to, iż są one sprawdzane po kolei, na początku trzeba
+        // spełnić oczekiwania bardziej ogólne, a dopiero potem te bardziej szczegółowe
     }
-
     @Test
     void calculateTotalInDollarsTest() throws ConnectException {
         IExpenseRepository expenseRepositoryMocked = mock(IExpenseRepository.class);
         when(expenseRepositoryMocked.getExpenses()).thenReturn(expenses);
         FancyService fancyServiceMocked = mock(FancyService.class);
         ExpenseManager expenseManager = new ExpenseManager(expenseRepositoryMocked, fancyServiceMocked);
-        //Sprawdzenie rzucania wyjatku
+        //Exception throw checking
         //        when(fancyServiceMocked.convert(anyDouble(),eq("PLN"),eq("USD"))).thenThrow(new ConnectException());
         when(fancyServiceMocked.convert(anyDouble(), eq("PLN"), eq("USD"))).thenAnswer(new Answer<Object>() {
             @Override

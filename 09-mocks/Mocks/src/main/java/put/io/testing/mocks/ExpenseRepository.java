@@ -28,16 +28,16 @@ public class ExpenseRepository implements IExpenseRepository {
     }
 
     @Override
-    public List<Expense> getExpensesByCategory(String category) {
-        List<Expense> filteredList = new ArrayList<Expense>();
+    public List<Expense> getExpensesByCategory(String cat) {
+        List<Expense> list = new ArrayList<Expense>();
 
         for (Expense expense : expenses) {
-            if (expense.getCategory().equals(category)) {
-                filteredList.add(expense);
+            if (expense.getCategory().equals(cat)) {
+                list.add(expense);
             }
         }
 
-        return filteredList;
+        return list;
     }
 
     @Override

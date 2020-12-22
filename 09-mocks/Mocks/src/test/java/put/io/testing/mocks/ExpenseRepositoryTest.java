@@ -22,28 +22,26 @@ public class ExpenseRepositoryTest {
 
     @Test
     void loadExpensesTest() {
-        IFancyDatabase mockedDB = mock(IFancyDatabase.class);
-        InOrder inOrder = inOrder(mockedDB);
-        when(mockedDB.queryAll()).thenReturn(Collections.emptyList());
-        expenseRepository = new ExpenseRepository(mockedDB);
+        IFancyDatabase mockDb = mock(IFancyDatabase.class);
+        InOrder inOrd = inOrder(mockDb);
+        when(mockDb.queryAll()).thenReturn(Collections.emptyList());
+        expenseRepository = new ExpenseRepository(mockDb);
         expenseRepository.loadExpenses();
-        inOrder.verify(mockedDB).connect();
-        inOrder.verify(mockedDB).queryAll();
-        inOrder.verify(mockedDB).close();
+        inOrd.verify(mockDb).connect();
+        inOrd.verify(mockDb).queryAll();
+        inOrd.verify(mockDb).close();
         assertEquals(0, expenseRepository.getExpenses().size());
     }
-
-
     @Test
     void saveExpensesTest() {
-        IFancyDatabase mockedDB = mock(IFancyDatabase.class);
-        InOrder inOrder = inOrder(mockedDB);
-        when(mockedDB.queryAll()).thenReturn(Collections.emptyList());
-        expenseRepository = new ExpenseRepository(mockedDB);
+        IFancyDatabase mockDb = mock(IFancyDatabase.class);
+        InOrder inOrd = inOrder(mockDb);
+        when(mockDb.queryAll()).thenReturn(Collections.emptyList());
+        expenseRepository = new ExpenseRepository(mockDb);
         IntStream.range(0, 5).forEach(i -> expenseRepository.addExpense(new Expense()));
         expenseRepository.saveExpenses();
-        verify(mockedDB, times(5)).persist(any(Expense.class));
-        inOrder.verify(mockedDB).connect();
-        inOrder.verify(mockedDB).close();
+        verify(mockDb, times(5)).persist(any(Expense.class));
+        inOrd.verify(mockDb).connect();
+        inOrd.verify(mockDb).close();
     }
 }
